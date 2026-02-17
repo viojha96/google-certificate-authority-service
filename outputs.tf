@@ -36,15 +36,6 @@ output "ca_pool" {
   value       = one(google_privateca_ca_pool.default)
 }
 
-output "ca_pool_id" {
-  description = "The FULL ID of the CA Pool for the SWP."
-  # References the local variable that handles the [0] index logic
-  value       = local.ca_pool_id
-  depends_on = [
-    google_privateca_certificate_authority.default
-  ]
-}
-
 output "cas" {
   description = "The Certificate Authority resources."
   value = {
@@ -52,7 +43,16 @@ output "cas" {
     k => v
   }
 }
+
+output "ca_pool_id" {
+  description = "The full resource ID of the CA Pool (e.g., 'projects/my-project/locations/us-central1/caPools/my-subordinate-pool-v1')."
+  value       = local.ca_pool_full_id
+  depends_on = [
+    google_privateca_certificate_authority.default
+  ]
+}
+
 output "ca_pool_name" {
-  description = "CA pool name"
-  value = local.ca_pool_name
+  description = "The short, user-defined name of the CA Pool (e.g., 'my-subordinate-pool-v1')."
+  value       = local.ca_pool_short_name
 }
